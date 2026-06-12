@@ -25,6 +25,17 @@ A web application built with Vue.js and Vuetify to record, view, and manage bloo
 * Supabase
 * JavaScript
 
+## Environment Variables
+
+Before running the project, create a .env file in the root directory and add your Supabase credentials:
+
+```
+VUE_APP_SUPABASE_URL=your_supabase_url
+VUE_APP_SUPABASE_KEY=your_supabase_key
+```
+
+These values can be found in your Supabase project settings.
+
 ## Installation
 
 ```bash
