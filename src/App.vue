@@ -1,49 +1,53 @@
 <template>
   <v-app style="margin-top: 0; padding-top: 0">
-    <login-user v-if="!authenticated" @login-success="authenticated = true" />
-    <v-container v-else>
-      <div id="app">
-        <div class="header-row mt-0">
-          <h1 class="text-center my-2">Mi Glucosa</h1>
+    <main class="content">
+      <login-user v-if="!authenticated" @login-success="authenticated = true" />
+      <template v-else>
+        <div id="app">
+          <div class="header-row mt-0">
+            <h1 class="text-center my-2">Mi Glucosa</h1>
+          </div>
+          <div class="switch-container">
+            <span class="theme-toggle" @click="darkMode = !darkMode">
+              {{ darkMode ? "☀️" : "🌙" }}
+            </span>
+            <v-btn icon @click="logout">
+              <v-icon> mdi-logout </v-icon>
+            </v-btn>
+          </div>
         </div>
-        <div class="switch-container">
-          <span class="theme-toggle" @click="darkMode = !darkMode">
-            {{ darkMode ? "☀️" : "🌙" }}
-          </span>
-          <v-btn icon @click="logout">
-            <v-icon> mdi-logout </v-icon>
-          </v-btn>
-        </div>
-      </div>
 
-      <v-tabs v-model="tab" fixed-tabs dark>
-        <v-tab>
-          <v-icon>mdi-clipboard-text-outline</v-icon>
-        </v-tab>
+        <v-tabs v-model="tab" fixed-tabs dark>
+          <v-tab>
+            <v-icon>mdi-clipboard-text-outline</v-icon>
+          </v-tab>
 
-        <v-tab>
-          <v-icon>mdi-history</v-icon>
-        </v-tab>
+          <v-tab>
+            <v-icon>mdi-history</v-icon>
+          </v-tab>
 
-        <v-tab>
-          <v-icon>mdi-chart-line</v-icon>
-        </v-tab>
-      </v-tabs>
+          <v-tab>
+            <v-icon>mdi-chart-line</v-icon>
+          </v-tab>
+        </v-tabs>
 
-      <v-window v-model="tab">
-        <v-window-item eager>
-          <RegistroDatos />
-        </v-window-item>
+        <v-window v-model="tab">
+          <v-window-item eager>
+            <RegistroDatos />
+          </v-window-item>
 
-        <v-window-item eager>
-          <PromedioDiario />
-        </v-window-item>
+          <v-window-item eager>
+            <PromedioDiario />
+          </v-window-item>
 
-        <v-window-item eager>
-          <GlucoseChart />
-        </v-window-item>
-      </v-window>
-    </v-container>
+          <v-window-item eager>
+            <GlucoseChart />
+          </v-window-item>
+        </v-window>
+      </template>
+    </main>
+    <template>
+</template>
     <v-footer dark class="redBlood text-caption d-flex justify-end">
       <div>
         <i>®gabserna&nbsp;{{ currentYear }}</i>
@@ -124,6 +128,24 @@ export default {
 </script>
 
 <style>
+.content {
+  flex: 1;
+}
+.app-content {
+  min-height: 70vh;
+}
+
+@media (max-width: 600px) {
+  .app-content {
+    min-height: 82vh;
+  }
+}
+
+@media (min-width: 1904px) {
+  .app-content {
+    min-height: 88vh;
+  }
+}
 body {
   background-color: #fff;
   color: #121212;
