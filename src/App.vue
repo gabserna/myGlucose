@@ -1,6 +1,7 @@
 <template>
   <v-app style="margin-top: 0; padding-top: 0">
-    <v-container>
+    <login-user v-if="!authenticated" @login-success="authenticated = true" />
+    <v-container v-else>
       <div id="app">
         <div class="header-row mt-0">
           <h1 class="text-center my-2">Mi Glucosa</h1>
@@ -9,6 +10,9 @@
           <span class="theme-toggle" @click="darkMode = !darkMode">
             {{ darkMode ? "☀️" : "🌙" }}
           </span>
+          <v-btn icon @click="logout">
+            <v-icon> mdi-logout </v-icon>
+          </v-btn>
         </div>
       </div>
 
@@ -49,6 +53,7 @@
 </template>
 
 <script>
+import LoginUser from "@/components/LoginUser.vue";
 import RegistroDatos from "@/components/RegistroDatos.vue";
 import PromedioDiario from "@/components/PromedioDiario.vue";
 import GlucoseChart from "@/components/GlucoseChart.vue";
@@ -56,6 +61,7 @@ import GlucoseChart from "@/components/GlucoseChart.vue";
 export default {
   name: "App",
   components: {
+    LoginUser,
     RegistroDatos,
     PromedioDiario,
     GlucoseChart,
@@ -64,6 +70,7 @@ export default {
     return {
       darkMode: false,
       tab: 0,
+      authenticated: false,
     };
   },
   watch: {
@@ -82,7 +89,36 @@ export default {
     },
   },
   mounted() {
+    // Recupera el tema guardado
     this.darkMode = localStorage.getItem("darkMode") === "true";
+
+    // Obtiene la fecha en la que inició sesión
+    const authenticatedAt = Number(localStorage.getItem("authenticatedAt"));
+
+    // 24 horas en milisegundos
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+
+    // Si existe una sesión y aún no expira, permite el acceso
+    if (
+      localStorage.getItem("authenticated") === "true" &&
+      authenticatedAt &&
+      Date.now() - authenticatedAt < ONE_DAY
+    ) {
+      this.authenticated = true;
+    } else {
+      // Si expiró o no existe, limpia la sesión
+      localStorage.removeItem("authenticated");
+      localStorage.removeItem("authenticatedAt");
+
+      this.authenticated = false;
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("authenticated");
+      localStorage.removeItem("authenticatedAt");
+      this.authenticated = false;
+    },
   },
 };
 </script>
