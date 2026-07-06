@@ -416,8 +416,8 @@ export default {
               fill: true,
             },
             {
-              label: "Objetivo (100)",
-              data: Array(this.registros.length).fill(100),
+              label: "Objetivo (90 mg/dL)",
+              data: Array(this.registros.length).fill(90),
               borderColor: "#00c853",
               borderDash: [5, 5],
               pointRadius: 0,
