@@ -30,6 +30,7 @@
           Guardar
         </v-btn>
       </v-card>
+
       <v-snackbar v-model="snackbar" :color="snackbarColor" timeout="3000" top>
         {{ mensaje }}
         <template v-slot:action="{ attrs }">
@@ -38,20 +39,6 @@
           </v-btn>
         </template>
       </v-snackbar>
-    </v-col>
-
-    <!-- Grafica -->
-    <v-col cols="12" md="8" offset-md="2">
-      <v-card class="mt-4 pa-4 chart-card" elevation="8" rounded="xl">
-        <v-card-title class="text-center justify-center">
-          Historial
-        </v-card-title>
-        <v-card-text>
-          <div class="chart-wrapper">
-            <canvas ref="graficaGlucosa"></canvas>
-          </div>
-        </v-card-text>
-      </v-card>
     </v-col>
 
     <!-- Tabla de registros -->
@@ -79,21 +66,13 @@
           </template>
           <!-- Botón eliminar -->
           <template v-slot:[`item.actions`]="{ item }">
-            <v-btn icon color="error" @click="abrirDialogEliminar(item)">
-              <v-icon>mdi-delete</v-icon>
+            <v-btn small icon color="error" @click="abrirDialogEliminar(item)">
+              <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
           </template>
         </v-data-table>
       </v-card>
-      <v-btn
-        class="mt-4"
-        color="error"
-        outlined
-        :disabled="!registros.length"
-        @click="abrirDialogReset"
-      >
-        Reiniciar registros
-      </v-btn>
+      <!-- confirmar eliminar todos los registros -->
       <v-dialog v-model="dialogReset" max-width="500">
         <v-card>
           <v-card-title>
@@ -130,6 +109,32 @@
         </v-card>
       </v-dialog>
     </v-col>
+
+    <!-- Grafica -->
+    <v-col cols="12" md="8" offset-md="2">
+      <v-card class="mt-2 pa-2 chart-card" elevation="8" rounded="xl">
+        <!-- <v-card-title class="text-center justify-center">
+          Historial
+        </v-card-title> -->
+        <v-card-text>
+          <div class="chart-wrapper">
+            <canvas ref="graficaGlucosa"></canvas>
+          </div>
+        </v-card-text>
+      </v-card>
+    </v-col>
+
+    <!-- reiniciar registros -->
+    <v-col cols="12" md="6" offset-md="3">
+      <v-btn
+        color="error"
+        outlined
+        :disabled="!registros.length"
+        @click="abrirDialogReset"
+      >
+        Reiniciar registros
+      </v-btn>
+    </v-col>
   </v-row>
 </template>
 
@@ -160,18 +165,25 @@ export default {
         {
           text: "Fecha",
           value: "fecha",
+          width: "30%",
+          sortable: false,
         },
         {
           text: "Glucosa",
           value: "value",
+          width: "20%",
+          sortable: false,
         },
         {
           text: "Estado",
           value: "estado",
+          width: "30%",
+          sortable: false,
         },
         {
           text: "Borrar",
           value: "actions",
+          width: "10%",
           sortable: false,
         },
       ],
